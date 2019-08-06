@@ -1,5 +1,6 @@
 """Rules for writing tests for the IntelliJ aspect."""
 
+load("//third_party/bazel_skylib/lib:collections.bzl", "collections")
 load(
     "//aspect:intellij_info.bzl",
     "intellij_info_aspect",
@@ -29,7 +30,7 @@ def _impl(ctx):
     args += [":".join([f.path for f in inputs.to_list()])]
     for k, v in output_groups.items():
         args.append(k)
-        args.append(":".join([f.short_path for f in v.to_list()]))
+        args.append(":".join(collections.uniq([f.short_path for f in v.to_list()])))
     argfile = ctx.actions.declare_file(
         output_name + ".params",
     )
